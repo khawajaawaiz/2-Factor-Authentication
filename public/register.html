@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - 2FA App</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="card">
+        <h1>📝 Create Account</h1>
+        <p class="subtitle">Join us and secure your account</p>
+
+        <div id="message" class="message"></div>
+
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Choose a username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Create a strong password" required>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Create Account</button>
+        </form>
+
+        <a href="/" class="link">
+            Already have an account? <span>Sign in</span>
+        </a>
+    </div>
+
+    <script src="/js/app.js"></script>
+    <script>
+        redirectIfLoggedIn();
+
+        document.getElementById("registerForm").onsubmit = async (e) => {
+            e.preventDefault();
+            hideMessage();
+
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
+
+            if (password !== confirmPassword) {
+                showMessage("error", "Passwords do not match!");
+                return;
+            }
+
+            try {
+                await register(username, password);
+                showMessage("success", "Account created! Redirecting to login...");
+                
+                setTimeout(() => {
+                    goTo("/");
+                }, 2000);
+
+            } catch (error) {
+                showMessage("error", error.message);
+            }
+        };
+    </script>
+</body>
+</html>

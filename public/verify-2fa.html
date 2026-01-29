@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify 2FA - 2FA App</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="card">
+        <h1>🔢 Enter 2FA Code</h1>
+        <p class="subtitle">Open Google Authenticator and enter the 6-digit code</p>
+
+        <div id="message" class="message"></div>
+
+        <form id="verifyForm">
+            <div class="form-group">
+                <label for="code">Authentication Code</label>
+                <input type="text" id="code" placeholder="Enter 6-digit code" 
+                       maxlength="6" pattern="[0-9]{6}" required
+                       style="text-align: center; font-size: 1.5rem; letter-spacing: 8px;">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Verify & Login</button>
+        </form>
+
+        <a href="/" class="link" id="cancelLink">
+            Cancel and go back to login
+        </a>
+    </div>
+
+    <script src="/js/app.js"></script>
+    <script>
+        const pendingUserId = localStorage.getItem("pendingUserId");
+
+        document.getElementById("verifyForm").onsubmit = async (e) => {
+            e.preventDefault();
+            hideMessage();
+
+            const code = document.getElementById("code").value;
+
+            try {
+                const data = await verify2FA(code, pendingUserId);
+
+                localStorage.removeItem("pendingUserId");
+
+                showMessage("success", "Verification successful!");
+
+                setTimeout(() => {
+                    goTo("/dashboard.html");
+                }, 1000);
+
+            } catch (error) {
+                showMessage("error", error.message);
+            }
+        };
+
+        document.getElementById("cancelLink").onclick = () => {
+            localStorage.removeItem("pendingUserId");
+        };
+    </script>
+</body>
+</html>
