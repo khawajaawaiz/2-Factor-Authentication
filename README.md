@@ -47,18 +47,6 @@ Before running this project, ensure you have:
 3. **Environment Setup:**
    Create a `.env` file in the root directory and copy the values from `.env.example`:
 
-   ```env
-   # Example .env configuration
-   DB_NAME=2FA
-   DB_USER=postgres
-   DB_PASSWORD=your_password
-   DB_HOST=localhost
-   DB_PORT=5432
-   JWT_SECRET=your_secret_key
-   ENCRYPTION_KEY=d7b8f9e2a1c4b3d5e6f7a8b9c0d1e2f3
-   ENCRYPTION_IV=a1b2c3d4e5f6g7h8
-   ```
-
 4. **Database Setup:**
    Execute the manual SQL commands provided in PgAdmin4 to create the `Users` and `Blacklists` tables.
 
